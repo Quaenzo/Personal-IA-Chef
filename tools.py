@@ -6,12 +6,17 @@ from langchain_core.tools import tool
 from typing import List, Any, Dict
 from pdf_processor import get_abbinamenti_retriever
 from langgraph.prebuilt.tool_node import ToolNode # Import ToolNode
+import streamlit as st 
 
 load_dotenv()
 
-llm = ChatGroq( model="llama3-70b-8192", temperature=0.7)
+groq_key= st.secrets["GROQ_API_KEY"]
 
-tavily_search_tool = TavilySearch(max_results=5)
+llm = ChatGroq( model="llama3-70b-8192", temperature=0.7, api_key=groq_key)
+
+tavily_key = st.secrets["TAVILY_API_KEY"]
+
+tavily_search_tool = TavilySearch(max_results=5, api_key=tavily_key)
 tavily_search_tool.name = "tavily_search"
 tavily_search_tool.description = "Used to retrieve information about recipes, ingredients and cooking methods or any other general information on the web. Give pertinent result based on the query."
 
