@@ -43,7 +43,7 @@ def process_pdf_and_create_vector_db():
 def get_abbinamenti_retriever():
     """Load up the FAISS vector database and return a retriever"""
     hugging_key = st.secrets['HUGGINGFACE_API_KEY']
-    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2", api_key=)
+    embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2", api_key=hugging_key)
     db = FAISS.load_local(VECTOR_DB_PATH, embeddings, allow_dangerous_deserialization=True)
     return db.as_retriever(search_kwargs={"k" : 5})
 
