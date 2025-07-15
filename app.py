@@ -224,7 +224,7 @@ def process_recipe_request(user_desire, dietary_preferences):
 
 def main():
     # Header
-    st.markdown('<h1 class="main-header">🍳 Chef Innovativo</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">🍳 Innovative Chef</h1>', unsafe_allow_html=True)
     
     st.markdown("""
     <div style="text-align: center; margin-bottom: 2rem;">
@@ -237,7 +237,7 @@ def main():
     # Sidebar for settings
     with st.sidebar:
         st.markdown('<div class="sidebar-section">', unsafe_allow_html=True)
-        st.header("🔧 Impostazioni")
+        st.header("🔧 Settings")
         
         # Dietary preferences
         st.subheader("Dietary preferences")
