@@ -12,7 +12,7 @@ load_dotenv()
 
 # Configure Streamlit page
 st.set_page_config(
-    page_title="Chef Innovativo",
+    page_title="Innovative Chef",
     page_icon="🍳",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -68,7 +68,7 @@ if 'messages' not in st.session_state:
 if 'app' not in st.session_state:
     st.session_state.app = build_recipe_agent_graph()
 if 'user_language' not in st.session_state:
-    st.session_state.user_language = 'it'  # Default to Italian
+    st.session_state.user_language = 'en'
 
 def detect_language(text):
     """Detect the language of the input text"""
@@ -76,7 +76,7 @@ def detect_language(text):
         language = detect(text)
         return language
     except langdetect.lang_detect_exception.LangDetectException:
-        return 'it'  # Default to Italian if detection fails
+        return 'en'  
 
 def get_language_name(lang_code):
     """Convert language code to full name"""
@@ -93,7 +93,7 @@ def get_language_name(lang_code):
         'ru': 'Russian',
         'ar': 'Arabic'
     }
-    return lang_names.get(lang_code, 'Italian')
+    return lang_names.get(lang_code, 'English')
 
 def display_message(message, is_user=True):
     """Display a message in the chat interface"""
@@ -240,37 +240,37 @@ def main():
         st.header("🔧 Impostazioni")
         
         # Dietary preferences
-        st.subheader("Preferenze Dietetiche")
+        st.subheader("Dietary preferences")
         dietary_options = [
-            "Vegetariana", "Vegana", "Senza Glutine", "Senza Lattosio",
-            "Keto", "Paleo", "Mediterranea", "Senza Zuccheri"
+            "Vegetarian", "Vegan", "Gluten-free", "Lactose-free",
+            "Keto", "Paleo", "Mediterranean", "No Sugar"
         ]
         selected_prefs = st.multiselect(
-            "Seleziona le tue preferenze:",
+            "Select your preference:",
             dietary_options,
             default=[]
         )
         
         # Language detection display
-        st.markdown("### 🌐 Lingua Rilevata")
+        st.markdown("### 🌐 Language found")
         if st.session_state.user_language:
             lang_name = get_language_name(st.session_state.user_language)
             st.info(f"**{lang_name}** ({st.session_state.user_language})")
         else:
-            st.info("Nessuna lingua rilevata")
+            st.info("No language found")
         
         # Recipe complexity
-        st.subheader("Complessità Ricetta")
+        st.subheader("Recipe complexity")
         complexity = st.select_slider(
-            "Livello di difficoltà:",
-            options=["Facile", "Medio", "Difficile"],
-            value="Medio"
+            "Difficulty level:",
+            options=["Easy", "Medium", "Hard"],
+            value="Medium"
         )
         
         # Serving size
-        st.subheader("Porzioni")
+        st.subheader("Portions")
         servings = st.number_input(
-            "Numero di porzioni:",
+            "Number of portions:",
             min_value=1,
             max_value=12,
             value=4
@@ -279,7 +279,7 @@ def main():
         st.markdown('</div>', unsafe_allow_html=True)
         
         # Clear chat button
-        if st.button("🗑️ Pulisci Chat", type="secondary"):
+        if st.button("🗑️ Clean chat", type="secondary"):
             st.session_state.messages = []
             st.rerun()
     
@@ -320,7 +320,7 @@ def main():
             display_message(user_input, is_user=True)
             
             # Process the request
-            with st.spinner("Sto creando la tua ricetta innovativa..."):
+            with st.spinner("Creating your innovative recipe..."):
                 final_state = process_recipe_request(user_input, selected_prefs)
             
             if final_state:
@@ -336,13 +336,13 @@ def main():
                     
                     # Display recipe in a nice container
                     st.markdown('<div class="recipe-container">', unsafe_allow_html=True)
-                    st.markdown("## 🎉 La Tua Ricetta Innovativa")
+                    st.markdown("## 🎉 Your innovative recipe")
                     st.markdown(recipe_content)
                     st.markdown('</div>', unsafe_allow_html=True)
                     
                     # Add download button
                     st.download_button(
-                        label="📥 Scarica Ricetta",
+                        label="📥 Download recipe",
                         data=recipe_content,
                         file_name=f"ricetta_{user_input.replace(' ', '_')}.txt",
                         mime="text/plain"
@@ -360,7 +360,7 @@ def main():
                     st.markdown('</div>', unsafe_allow_html=True)
                     
                 else:
-                    error_msg = "Non sono riuscito a creare una ricetta. Prova a essere più specifico."
+                    error_msg = "I cannot create the recipe you asked. Try to be more specific."
                     st.session_state.messages.append({
                         'content': error_msg,
                         'is_user': False
@@ -369,7 +369,7 @@ def main():
     
     with col2:
         # Recipe suggestions with multilingual support
-        st.markdown("### 💡 Suggerimenti")
+        st.markdown("### 💡 Suggestions")
         
         # Language-specific suggestions
         suggestions_by_lang = {
@@ -427,18 +427,18 @@ def main():
                 st.rerun()
         
         # Statistics
-        st.markdown("### 📊 Statistiche")
-        st.metric("Ricette create", len([m for m in st.session_state.messages if not m['is_user']]))
-        st.metric("Messaggi totali", len(st.session_state.messages))
+        st.markdown("### 📊 Statistics")
+        st.metric("Recipe created", len([m for m in st.session_state.messages if not m['is_user']]))
+        st.metric("Total messages", len(st.session_state.messages))
         
         # Tips
-        st.markdown("### 💭 Consigli")
+        st.markdown("### 💭 Tips")
         st.info("""
-        **Per ricette migliori:**
-        - Sii specifico sui tuoi gusti
-        - Menziona ingredienti preferiti
-        - Indica il tipo di pasto
-        - Specifica il tempo di preparazione
+        **For better recipes:**
+        - Specify your tastes
+        - Put your preferred ingredients
+        - Specify the meal type
+        - Specify preparation time
         """)
 
 if __name__ == "__main__":
